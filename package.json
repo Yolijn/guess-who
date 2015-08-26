@@ -1,0 +1,22 @@
+{
+  "name": "who-is-it",
+  "version": "0.1.0",
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:frameless/demos.git"
+  },
+  "license": "SEE LICENSE IN LICENSE.TXT",
+  "private": true,
+  "engine": {
+    "node": ">=0.10"
+  },
+  "dependencies": {
+    "csv-parse": "*",
+    "lodash": "*",
+    "browserify": "*",
+    "browserify-fs": "*"
+  },
+  "script": {
+    "install": "browserify -r stream -r csv-parse -r lodash -o script/browserified.js"
+  }
+}
