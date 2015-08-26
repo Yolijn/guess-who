@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<title>Guess Who?</title>
+	<link rel="stylesheet" type="text/css" href="../style/basic.css">
+</head>
+<body>
+	<h1>Guess Who?</h1>
+	<button id="howtoplay" onclick="showrules()">How to play</button>
+	<div id="cards"></div>
+	<div id="random"></div>
+
+	<div id="questions">
+		<form id="question-form">
+			<input type="text" name="question" placeholder="Ask away" autofocus>
+		</form>
+	</div>
+	<div id="done"></div>
+	<div id="asked"></div>
+	<div id="rules">
+		<div class="container">
+			<button onclick="closerules()">Close</button>
+			<h2>Rules:</h2>
+			<p>You should try to guess who with as few guesses as possible</p>
+			<p>Keywords:</p>
+			<ul>
+				<li>Hair colors: <i>'red hair'</i>, <i>'brown hair'</i>, <i>'blond hair'</i>, <i>'grey hair'</i> or <i>'black hair'</i></li>
+				<li>Hair lengths: <i>'long hair'</i>, <i>'short hair'</i>, <i>'balding hair'</i></li>
+				<li>Hair types: <i>'curly hair'</i>, <i>'straight hair'</i></li>
+				<li>Eye colors: <i>'blue eyes'</i>, <i>'brown eyes'</i></li>
+				<li>Facial hair: <i>'beard'</i> or <i>'moustache'</i> or <i>'doesn't have beard'</i>, <i>'doesn't have moustache'</i></li>
+				<li>Accessoires: <i>'glasses'</i>, <i>'hat'</i>, <i>'earrings'</i> or <i>'ribbons'</i></li>
+				<li>Gender: <i>'male'</i> or <i>'female'</i></li> 
+			</ul>
+			<p>Or you can guess by entering the name</p>
+			<p><strong>N.B. For now use english and be specific. <br/>For example: 'balding hair' is a question 'balding' does not yet work.</strong></p>
+		</div>
+	</div>
+</body>
+<script src="../script/nih-fetch.js"></script>
+<script src="../script/browserified.js"></script>
+<script src="../script/parse-csv.js"></script>
+<script src="../script/game.js"></script>
+<script src="../script/basic.js"></script>
