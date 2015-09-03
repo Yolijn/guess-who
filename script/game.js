@@ -16,7 +16,6 @@ var steps = 0,
 
 function Game(traits, people)
 {
-// console.log(traits)
 	var cards, secretCard, 
 		remaining = _.clone(people),
 		done = false;
@@ -60,7 +59,6 @@ function Game(traits, people)
 		removeAllClasses("false");
 		remaining =  _.clone(people);
 		steps = 0;
-// console.log(remaining);
 		questions = [];
 		document.getElementById('question').focus();
 		done = false;
@@ -84,10 +82,7 @@ function Game(traits, people)
 				array.push(person[trait]);
 			}
 		});
-// console.log(traitIndex);
-// console.log(array);
 	});
-// console.log(traitIndex.hair_color)
 
 	this.filterCards = function filterCards(filter)
 	{
@@ -179,67 +174,56 @@ question_form.addEventListener('submit', function (evt) {
 
 	steps++;
 
-	var question = evt.target.question.value,
-		guessed_name,
-		guessed_gender,
-		guessed_haircolor,
-		guessed_hairlength,
-		guessed_hairtype,
-		guessed_eyecolor,
-		has_hat,
-		has_glasses,
-		has_moustache,
-		has_beard,
-		has_ribbons,
-		has_earrings;
-
+	var question = evt.target.question.value;
+		
 	showAllQuestions(question);
 
 	var qWords = question.toLowerCase().split(/\W/);
+	var filter = {}
 
-	 for (var i = qWords.length -1; i>=0; i--) {
-	 	var match = false;
+	for (var i = qWords.length -1; i>=0; i--) {
+		var x = _.pick(traitIndex, function(trait) {
+			return _.includes(trait, qWords[i])
+		})
 
-	 	if (_.includes(traitIndex.name, qWords[i])) {
-	 		guessed_name = qWords[i];
-	 	}
+		if (_.keys(x).length === 1) {
+			var key = _.keys(x)[0];
+			filter[key] = qWords[i];
+		}
 
-	 	if (_.includes(traitIndex.hair_color, qWords[i]) && _.includes(qWords, "hair")) {
-	 		guessed_haircolor = qWords[i];
-	 	}
+		else {
+			var keywords = _.map(_.keys(x), function(id) {
+			// remove everthing after an underscore separator
+				return id.replace(/(_.+)/, '')
+			});
+			var specifiers = _.map(_.keys(x), function(s) {
+			// remove everything before an underscore separator	
+				var match = s.replace(/.+_(.+)/, '$1')
+				return match
+			});
 
-	 	if (_.includes(traitIndex.eye_color, qWords[i]) && _.includes(qWords, "eyes")) {
-	 		guessed_eyecolor = qWords[i];
-	 	}
+			specifiers = _.uniq(specifiers);
+			if (specifiers.length <= 1) {
+				specifier = specifiers[0];
+			}
+			else {
+				//TODO ask user to specify input
+			}
 
-	 	if (_.includes(traitIndex.hair_length, qWords[i]) && _.includes(qWords, "hair")) {
-	 		guessed_hairlength = qWords[i];
-	 	}
-
-	 	if (_.includes(traitIndex.hair_type, qWords[i]) && _.includes(qWords, "hair")) {
-	 		guessed_hairtype = qWords[i];
-	 	}
-
-	 	if (_.includes(traitIndex.gender, qWords[i])) {
-	 		guessed_gender = qWords[i];
-	 	}
-
-	 }
-
-	var filter = {
-		"name": guessed_name,
-		"hair_color": guessed_haircolor,
-		"hair_length": guessed_hairlength,
-		"hair_type": guessed_hairtype,
-		"eye_color": guessed_eyecolor,
-		"gender": guessed_gender,
+			_.forEach(keywords, function(keyword) {
+				if (_.includes(qWords, keyword) || _.includes(qWords, keyword+"s")){
+					var key = keyword + "_" + specifier;
+					filter[key] = qWords[i];
+				}	
+			})
+		}
 	}
 
 	var booleans = ["moustache", "beard", "glasses", "earrings", "hat", "ribbons"]
 
-    _.forEach(booleans, function(name) {
-    	if (_.includes(qWords, name)) {
-	 		filter[name] = !_.includes(qWords, "doesn't");
+    _.forEach(booleans, function(b) {
+    	if (_.includes(qWords, b)) {
+	 		filter[b] = !_.includes(qWords, "doesn't");
 		}
     });
 
